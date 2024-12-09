@@ -1,3 +1,3 @@
-index.html => open with live server 
-file app.py để link frontend và model
+index.html => open with live server\\
+file app.py để link frontend và model\\
 đang lười viết...
