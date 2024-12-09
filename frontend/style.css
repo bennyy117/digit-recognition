@@ -94,68 +94,6 @@ h1 {
     transform: translateY(-500px);
 }
 
-/* button */
-.btn {
-    margin-top: 20px;
-    cursor: pointer;
-    position: relative;
-    padding: 10px 20px;
-    background: #f1a8b3;
-    font-size: 20px;
-    font-weight: 600;
-    font-family: "Montserrat Alternates", sans-serif;
-    border: none;
-    border-top-right-radius: 10px;
-    border-bottom-left-radius: 10px;
-    transition: all 0.5s;
-
-    &:after,
-    &:before {
-        content: " ";
-        width: 15px;
-        height: 15px;
-        position: absolute;
-        border: 0px solid #fff;
-        transition: all 0.5s;
-    }
-
-    &:after {
-        top: -2px;
-        left: -2px;
-        border-top: 4px solid black;
-        border-left: 4px solid black;
-    }
-
-    &:before {
-        bottom: -2px;
-        right: -2px;
-        border-bottom: 4px solid black;
-        border-right: 4px solid black;
-    }
-
-    &:hover {
-        border-top-right-radius: 0px;
-        border-bottom-left-radius: 0px;
-        background: black;
-        /* background:rgb(200, 77, 153); */
-        color:white;
-        &:before,
-        &:after {
-            width: 100%;
-            height: 100%;
-            border-color: #ffebee;
-        }
-    }
-}
-
-#predictID {
-    margin-right: 15px;
-}
-
-#clearID {
-    margin-left: 15px;
-}
-
 /* prediction */
 
 .output {

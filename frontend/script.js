@@ -11,7 +11,7 @@ function initializeCanvas() {
     context.fillRect(0, 0, canvas.width, canvas.height);
     context.strokeStyle = "#000000";
     context.lineJoin = "round";
-    context.lineWidth = 10;
+    context.lineWidth = 50;
 
     // Event handlers for drawing
     canvas.addEventListener("mousedown", () => {

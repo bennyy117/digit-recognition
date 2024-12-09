@@ -16,7 +16,7 @@ def predict_digit():
     try:
         data = request.json['image']
         image_data = base64.b64decode(data.split(',')[1])
-        image = Image.open(BytesIO(image_data)).convert('L')  # chuyển sang ảnh
+        image = Image.open(BytesIO(image_data)).convert('L')  # Chuyển sang ảnh
         image = image.resize((28, 28))  
         image_array = np.array(image) / 255.0  # Normalize
         image_array = image_array.reshape(1, 28, 28, 1)
