@@ -5,11 +5,16 @@ import base64
 from PIL import Image
 from io import BytesIO
 from flask_ngrok import run_with_ngrok
+import os
 
 app = Flask(__name__)
 run_with_ngrok(app) 
 
-model = tf.keras.models.load_model('my_model.h5')
+path = os.path.dirname(os.path.realpath(__file__))
+# path = os.path.dirname(os.path.realpath("testing.ipynb"))
+
+model = tf.keras.models.load_model(f"{path}/my_model.h5")
+model.compile(optimizer='adam', loss='sparse_categorical_crossentropy', metrics=['accuracy'])
 
 @app.route('/predict-digit', methods=['POST'])
 def predict_digit():
