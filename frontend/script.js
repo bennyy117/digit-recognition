@@ -7,9 +7,9 @@ let timeoutId = null;
 
 // Initialize canvas
 function initializeCanvas() {
-    context.fillStyle = "#ffffff";
+    context.fillStyle = "#00000";
     context.fillRect(0, 0, canvas.width, canvas.height);
-    context.strokeStyle = "#000000";
+    context.strokeStyle = "#ffffff";
     context.lineJoin = "round";
     context.lineWidth = 50;
 

@@ -5,13 +5,17 @@ import tensorflow as tf
 from io import BytesIO
 from PIL import Image
 import base64
+import os
+import cv2
 
 app = Flask(__name__)
 
 CORS(app)
 
+path = os.path.dirname(os.path.realpath(__file__))
+
 # Load the pre-trained model
-model = tf.keras.models.load_model('digit_model.h5')
+model = tf.keras.models.load_model(f"{path}/digit_model.h5")
 model.compile(optimizer='adam', loss='sparse_categorical_crossentropy', metrics=['accuracy'])
 
 # Predict
