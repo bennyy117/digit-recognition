@@ -1,32 +1,38 @@
 from flask import Flask, request, jsonify
-import tensorflow as tf
+from flask_cors import CORS  # để link port 5500 từ front-end sang 5000 back-end
 import numpy as np
-import base64
-from PIL import Image
+import tensorflow as tf
 from io import BytesIO
-from flask_ngrok import run_with_ngrok
+from PIL import Image
+import base64
 
 app = Flask(__name__)
-run_with_ngrok(app) 
 
-model = tf.keras.models.load_model('my_model.h5')
+CORS(app)
 
-@app.route('/predict-digit', methods=['POST'])
-def predict_digit():
-    try:
-        data = request.json['image']
-        image_data = base64.b64decode(data.split(',')[1])
-        image = Image.open(BytesIO(image_data)).convert('L')  # Chuyển sang ảnh
-        image = image.resize((28, 28))  
-        image_array = np.array(image) / 255.0  # Normalize
-        image_array = image_array.reshape(1, 28, 28, 1)
+# Load the pre-trained model
+model = tf.keras.models.load_model('digit_model.h5')
+model.compile(optimizer='adam', loss='sparse_categorical_crossentropy', metrics=['accuracy'])
 
-        predictions = model.predict(image_array)
-        predictions = predictions[0]  
-        return jsonify({'predictions': predictions.tolist()})
+# Predict
+def predict_digit(image_data):
+    # Decode image
+    img_data = base64.b64decode(image_data.split(',')[1])
+    img = Image.open(BytesIO(img_data)).convert('L')
+    img = img.resize((28, 28))
+    img = np.array(img) / 255.0
+    img = img.reshape(1, 28, 28, 1)  # Reshape for model input
 
-    except Exception as e:
-        return jsonify({'error': str(e)}), 400
+    # Model prediction
+    prediction = model.predict(img)
+    return prediction[0].tolist()
+
+# Endpoint
+@app.route('/predict', methods=['POST'])
+def predict():
+    image_data = request.form['image']
+    predictions = predict_digit(image_data)
+    return jsonify(predictions=predictions) # Prediction dưới dạng json
 
 if __name__ == '__main__':
-    app.run()
+    app.run(debug=True, port=5000)  # Run flask port 5000

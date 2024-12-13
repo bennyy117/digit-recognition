@@ -38,25 +38,29 @@ function clearCanvas() {
 function predictDigit() {
     predicted = true;
     const image = canvas.toDataURL("image/png");
-    // Cái này t thử dùng google colab nên có cái link này nma cũng chưa được
-    axios.post("https://021e-34-85-225-116.ngrok-free.app", { image }).then(response => {
-        const { predictions } = response.data;
-        predictions.forEach((prob, index) => {
-            predictionDivs[index].textContent = `${(prob * 100).toFixed(2)}%`;
-        });
-    }).catch(error => {
-        console.error('Error predicting digit:', error);
-    });
-    console.log("ok"); // Check
 
-    // Event handlers for drawing
-    canvas.addEventListener("mousedown", () => {
-        if (predicted == true) {
-            clearCanvas();
-        }
-        isDrawing = true;
-        context.beginPath();
+    // FormData object to send image data
+    let formData = new FormData();
+    formData.append("image", image); 
+
+    fetch('http://127.0.0.1:5000/predict', { 
+        method: 'POST',
+        body: formData
+    })
+    .then(response => response.json()) 
+    .then(data => {
+        let predictions = data.predictions;
+        
+        predictions.forEach((prediction, index) => {
+            let percentage = (prediction * 100).toFixed(0); 
+            predictionDivs[index].textContent = `${percentage}%`;
+        });
+    })
+    .catch(error => {
+        console.error('Error:', error);
     });
+
+    console.log("check ok");
 }
 
 // Event handlers for drawing
@@ -84,7 +88,7 @@ canvas.addEventListener("mouseup", () => {
     isDrawing = false;
     timeoutId = setTimeout(() => {
         predictDigit();
-    }, 2000); 
+    }, 2000);
 });
 
 canvas.addEventListener("mouseout", () => {
