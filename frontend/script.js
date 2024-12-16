@@ -1,3 +1,4 @@
+const labelDivs = Array.from(document.querySelectorAll(".label_el"));
 const predictionDivs = Array.from(document.querySelectorAll(".res_el"));
 let canvas = document.getElementById("canvas");
 let context = canvas.getContext("2d");
@@ -7,9 +8,9 @@ let timeoutId = null;
 
 // Initialize canvas
 function initializeCanvas() {
-    context.fillStyle = "#ffffff";
+    context.fillStyle = "#000000";
     context.fillRect(0, 0, canvas.width, canvas.height);
-    context.strokeStyle = "#000000";
+    context.strokeStyle = "#ffffff";
     context.lineJoin = "round";
     context.lineWidth = 50;
 
@@ -28,6 +29,12 @@ function getPosition(event) {
 
 // Clear canvas
 function clearCanvas() {
+    labelDivs.forEach((div) => {
+        div.style.backgroundColor = '#ffebee';
+    });
+    predictionDivs.forEach((div) => {
+        div.style.backgroundColor = '#fdf4f6';
+    });
     context.clearRect(0, 0, canvas.width, canvas.height);
     context.fillRect(0, 0, canvas.width, canvas.height);
     predictionDivs.forEach(div => (div.textContent = "0%"));// Reset predictions
@@ -50,17 +57,32 @@ function predictDigit() {
     .then(response => response.json()) 
     .then(data => {
         let predictions = data.predictions;
+
+        let sortResOrigin = []; let Res = []; let j = 0; let k = 0; // Array to sort results
         
         predictions.forEach((prediction, index) => {
+            let percentageOrigin = prediction * 100; 
             let percentage = (prediction * 100).toFixed(0); 
+            sortResOrigin[j] = percentageOrigin; j++; 
+            Res[k] = percentage; k++; 
             predictionDivs[index].textContent = `${percentage}%`;
         });
+
+        sortResOrigin.sort((a, b) => b - a);
+        console.log(sortResOrigin);
+        let maxRes = sortResOrigin[0].toFixed(0);
+        console.log(maxRes);
+        Res.forEach((percentage, index) => {
+            if (percentage == maxRes) {
+                // Change background color to green for max result
+                labelDivs[index].style.backgroundColor = '#16796F';
+                predictionDivs[index].style.backgroundColor = '#7CB7AF';
+            }
+        })
     })
     .catch(error => {
         console.error('Error:', error);
     });
-
-    console.log("check ok");
 }
 
 // Event handlers for drawing

@@ -32,8 +32,8 @@ h1 {
 }
 
 .box svg line {
-    stroke-width: 7;
-    stroke: black;
+    stroke-width: 17;
+    stroke: rgb(255, 255, 255);
     fill: none;
     transition: all 0.8s ease-in-out;
 }
@@ -74,7 +74,7 @@ h1 {
 }
 
 .input .box:hover svg line {
-    stroke-width: 10;
+    stroke-width: 17;
     transition-delay: 0s;
 }
 
