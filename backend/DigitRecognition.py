@@ -29,8 +29,9 @@ def preprocess_image(image_path):
     # Normalize pixel values
     img = img.astype('float32') / 255.0
     # Reshape for model input
-    img = np.expand_dims(img, axis=0)
-    img = np.expand_dims(img, axis=-1)
+    # Reshape from (28,28) to (1,28,28,1)
+    img = np.expand_dims(img, axis=0)  # Add batch dimension -> (1,28,28)
+    img = np.expand_dims(img, axis=-1) # Add channel dimension -> (1,28,28,1)
     return img
 
 # Train the model
